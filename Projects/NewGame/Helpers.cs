@@ -8,7 +8,7 @@ namespace NewGame
 		public static byte LinearInterpolation(byte a, byte b, float ratio)
 		{
 			if (ratio < 0 || 255 < ratio) throw new ArgumentOutOfRangeException(nameof(ratio), ratio, "ratio < 0 || 255 < ratio");
-			return (byte)(a < b ? ratio * (b - a) + a : (1 / ratio) * (a - b) + b);
+			return (byte)(a < b ? ratio * (b - a) + a : (1 - ratio) * (a - b) + b);
 		}
 
 		public static Color LinearInterpolation(Color a, Color b, float ratio)
