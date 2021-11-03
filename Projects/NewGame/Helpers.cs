@@ -38,5 +38,11 @@ namespace NewGame
 			@byte.TryFormat(buffer[i..], out int chars);
 			i += chars;
 		}
+
+		public static void Write(this Span<char> buffer, ref int i, int @int)
+		{
+			@int.TryFormat(buffer[i..], out int chars);
+			i += chars;
+		}
 	}
 }

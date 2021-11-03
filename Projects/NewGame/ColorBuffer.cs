@@ -19,13 +19,12 @@ namespace NewGame
 		public static int MaxConsoleBufferLength(ColorBuffer colorBuffer) =>
 			colorBuffer.Width * colorBuffer.Height * 19 + colorBuffer.Height * Environment.NewLine.Length;
 
-		public int WriteConsoleBuffer(Span<char> charBuffer, bool includeNewLines = false) => WriteConsoleBuffer(this, charBuffer, includeNewLines);
+		public int WriteConsoleBuffer(Span<char> charBuffer) => WriteConsoleBuffer(this, charBuffer);
 
-		public static int WriteConsoleBuffer(ColorBuffer colorBuffer, Span<char> charBuffer, bool includeNewLines = false)
+		public static int WriteConsoleBuffer(ColorBuffer colorBuffer, Span<char> charBuffer)
 		{
 			int i = 0;
 			Color? previousColor = null;
-			int w = 0;
 			foreach (Color color in colorBuffer.Pixels)
 			{
 				if (previousColor is null || previousColor != color)
@@ -44,11 +43,40 @@ namespace NewGame
 					charBuffer.Write(ref i, 'm');
 				}
 				charBuffer.Write(ref i, ' ');
-				w++;
-				if (includeNewLines && charBuffer.Length >= i + Environment.NewLine.Length && w >= colorBuffer.Width)
+			}
+			return i;
+		}
+
+		public static int WriteChangesConsoleBuffer(ColorBuffer previous, ColorBuffer current, Span<char> charBuffer)
+		{
+			if (previous is null || previous.Width != current.Width || previous.Height != current.Height)
+			{
+				return WriteConsoleBuffer(current, charBuffer);
+			}
+			int i = 0;
+
+			for (int h = 0; h < current.Height; h++)
+			{
+				for (int w = 0; w < current.Width; w++)
 				{
-					charBuffer.Write(ref i, Environment.NewLine);
-					w = 0;
+					if (previous[w, h] != current[w, h])
+					{
+						// ANSI escape codes: https://en.wikipedia.org/wiki/ANSI_escape_code
+						Color color = current[w, h];
+						charBuffer.Write(ref i, "\u001b[");
+						charBuffer.Write(ref i, h);
+						charBuffer.Write(ref i, ';');
+						charBuffer.Write(ref i, w);
+						charBuffer.Write(ref i, 'H');
+						charBuffer.Write(ref i, "\u001b[48;2;");
+						charBuffer.Write(ref i, color.R);
+						charBuffer.Write(ref i, ';');
+						charBuffer.Write(ref i, color.G);
+						charBuffer.Write(ref i, ';');
+						charBuffer.Write(ref i, color.B);
+						charBuffer.Write(ref i, 'm');
+						charBuffer.Write(ref i, ' ');
+					}
 				}
 			}
 			return i;

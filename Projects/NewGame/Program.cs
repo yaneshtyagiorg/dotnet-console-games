@@ -7,11 +7,17 @@ namespace NewGame
 {
 	class Program
 	{
-		static ColorBuffer screenBuffer;
+		static ColorBuffer screenBufferA;
+		static ColorBuffer screenBufferB;
 		static char[] textBuffer;
 		static bool gameRunning = true;
 		static (int Left, int Top) characterPosition = (0, 0);
 		static DateTime previoiusRender = DateTime.Now;
+
+		static Bitmap character = new(Path.Combine("Images", "character.png"));
+		static ColorBuffer characterBuffer = ColorBuffer.New(character);
+		static Bitmap transparent = new(Path.Combine("Images", "transparent.png"));
+		static ColorBuffer transparentBuffer = ColorBuffer.New(transparent);
 
 		static void Main()
 		{
@@ -60,30 +66,26 @@ namespace NewGame
 		static void Render()
 		{
 			var (width, height) = GetWidthAndHeight();
-			if (screenBuffer is null || screenBuffer.Width != width || screenBuffer.Height != height)
+			if (screenBufferB is null || screenBufferB.Width != width || screenBufferB.Height != height)
 			{
 				InitializeScreenBuffer(width, height);
 			}
 
-			screenBuffer.Fill(Color.Black);
-
-			Bitmap character = new(Path.Combine("Images", "character.png"));
-			ColorBuffer characterBuffer = ColorBuffer.New(character);
-			ColorBuffer.Render(characterBuffer, screenBuffer, characterPosition.Left, characterPosition.Top);
-
-			Bitmap transparent = new(Path.Combine("Images", "transparent.png"));
-			ColorBuffer transparentBuffer = ColorBuffer.New(transparent);
-			ColorBuffer.Render(transparentBuffer, screenBuffer, 0, 0);
-
-			int length = screenBuffer.WriteConsoleBuffer(textBuffer, false);
+			screenBufferB.Fill(Color.Black);
+			ColorBuffer.Render(characterBuffer, screenBufferB, characterPosition.Left, characterPosition.Top);
+			ColorBuffer.Render(transparentBuffer, screenBufferB, 0, 0);
+			int length = ColorBuffer.WriteChangesConsoleBuffer(screenBufferA, screenBufferB, textBuffer);
+			(screenBufferA, screenBufferB) = (screenBufferB, screenBufferA);
+			//int length = screenBufferB.WriteConsoleBuffer(textBuffer);
 			Console.SetCursorPosition(0, 0);
 			Console.Write(textBuffer, 0, length);
 		}
 
 		static void InitializeScreenBuffer(int width, int height)
 		{
-			screenBuffer = ColorBuffer.New(Console.WindowWidth, Console.WindowHeight);
-			textBuffer = new char[screenBuffer.MaxConsoleBufferLength()];
+			screenBufferA = ColorBuffer.New(width, height);
+			screenBufferB = ColorBuffer.New(width, height);
+			textBuffer = new char[screenBufferB.MaxConsoleBufferLength()];
 		}
 
 		static (int Width, int Height) GetWidthAndHeight()
