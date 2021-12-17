@@ -1,8 +1,8 @@
-name: 2048 Build
+name: Memory Build
 on:
   push:
     paths:
-    - 'Projects/2048/**'
+    - 'Projects/Memory/**'
   workflow_dispatch:
 jobs:
   build:
@@ -14,4 +14,4 @@ jobs:
       with:
         dotnet-version: 6.0.x
     - name: Build with dotnet
-      run: dotnet build "Projects\2048\2048.csproj" --configuration Release
+      run: dotnet build "Projects\Memory\Memory.csproj" --configuration Release

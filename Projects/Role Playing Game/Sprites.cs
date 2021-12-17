@@ -45,10 +45,10 @@ namespace Role_Playing_Game
 			@" |___| " + "\n" +
 			@"       ";
 		public const string Water =
-			@"░░░░░░░" + "\n" +
-			@"░░░░░░░" + "\n" +
-			@"░░░░░░░" + "\n" +
-			@"░░░░░░░";
+			@"~~~~~~~" + "\n" +
+			@"~~~~~~~" + "\n" +
+			@"~~~~~~~" + "\n" +
+			@"~~~~~~~";
 		public const string Wall_0000 =
 			@"╔═════╗" + "\n" +
 			@"║█████║" + "\n" +
@@ -140,10 +140,10 @@ namespace Role_Playing_Game
 			@"  | |  " + "\n" +
 			@"  / \  ";
 		public const string Tree2 =
-            @"  (@@) " + "\n" +
-            @" (@@@@)" + "\n" +
-            @"   ||  " + "\n" +
-            @"   ||  ";
+			@"  (@@) " + "\n" +
+			@" (@@@@)" + "\n" +
+			@"   ||  " + "\n" +
+			@"   ||  ";
 		public const string Barrels1 =
 			@"       " + "\n" +
 			@"  /---\ " + "\n" +
@@ -185,15 +185,15 @@ namespace Role_Playing_Game
 			@" /    \" + "\n" +
 			@"/      ";
 		public const string Mountain2 =
-            @"   /\  " + "\n" +
-            @"  /\/\ " + "\n" +
-            @" /    \" + "\n" +
-            @"/      ";
+			@"   /\  " + "\n" +
+			@"  /\/\ " + "\n" +
+			@" /    \" + "\n" +
+			@"/      ";
 		public const string Mountain3 =
-            @"   /\  " + "\n" +
-            @"  /**\ " + "\n" +
-            @" /    \" + "\n" +
-            @"/      ";
+			@"   /\  " + "\n" +
+			@"  /**\ " + "\n" +
+			@" /    \" + "\n" +
+			@"/      ";
 		public const string Guard =
 			@" ^  O  " + "\n" +
 			@" |--|> " + "\n" +
